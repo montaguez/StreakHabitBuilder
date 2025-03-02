@@ -55,6 +55,40 @@ function renderHabits() {
             <h3>${habit.name}</h3>
             <p>Current streak: ${habit.streak} days</p>
             <button onclick="markComplete(${habit.id})">Mark Complete Today</button>
+            <button onclick="deleteHabit(${habit.id})" class="delete-btn">Delete</button>
         </div>
     `).join('');
+}
+
+function markComplete(habitId) {
+    const habit = habits.find(h => h.id === habitId);
+    if (!habit) return;
+
+    const today = new Date().toDateString();
+    const lastCompleted = habit.lastCompleted ? new Date(habit.lastCompleted).toDateString() : null;
+
+    if (lastCompleted === today) {
+        alert('You already completed this habit today!');
+        return;
+    }
+
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayString = yesterday.toDateString();
+
+    if (lastCompleted === yesterdayString || habit.streak === 0) {
+        habit.streak++;
+    } else {
+        habit.streak = 1;
+    }
+
+    habit.lastCompleted = new Date();
+    renderHabits();
+}
+
+function deleteHabit(habitId) {
+    if (confirm('Are you sure you want to delete this habit?')) {
+        habits = habits.filter(h => h.id !== habitId);
+        renderHabits();
+    }
 }
