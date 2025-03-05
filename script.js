@@ -7,6 +7,8 @@ let habits = [];
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing app...');
 
+    loadHabits();
+
     const addBtn = document.getElementById('addHabitBtn');
     const habitInput = document.getElementById('habitName');
 
@@ -19,6 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderHabits();
 });
+
+function loadHabits() {
+    const saved = localStorage.getItem('streakHabits');
+    if (saved) {
+        habits = JSON.parse(saved);
+    }
+}
+
+function saveHabits() {
+    localStorage.setItem('streakHabits', JSON.stringify(habits));
+}
 
 function addHabit() {
     const input = document.getElementById('habitName');
@@ -39,6 +52,7 @@ function addHabit() {
 
     habits.push(habit);
     input.value = '';
+    saveHabits();
     renderHabits();
 }
 
@@ -83,12 +97,14 @@ function markComplete(habitId) {
     }
 
     habit.lastCompleted = new Date();
+    saveHabits();
     renderHabits();
 }
 
 function deleteHabit(habitId) {
     if (confirm('Are you sure you want to delete this habit?')) {
         habits = habits.filter(h => h.id !== habitId);
+        saveHabits();
         renderHabits();
     }
 }
