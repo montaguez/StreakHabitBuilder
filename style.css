@@ -69,18 +69,64 @@ h1 {
     background: #0056b3;
 }
 
-.habits-list h2 {
+.habits-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
+}
+
+.habits-list h2 {
+    margin: 0;
     color: #555;
+}
+
+.export-btn {
+    background: #17a2b8 !important;
+    color: white !important;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.2s ease;
+}
+
+.export-btn:hover {
+    background: #138496 !important;
+    transform: translateY(-1px);
 }
 
 .habit-item {
     background: #fff;
     border: 1px solid #eee;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.habit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.streak-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.habit-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
 }
 
 .habit-item h3 {
@@ -106,9 +152,23 @@ h1 {
     background: #218838;
 }
 
+.habit-item button:disabled {
+    background: #6c757d !important;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.edit-btn {
+    background: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.edit-btn:hover {
+    background: #e0a800 !important;
+}
+
 .delete-btn {
     background: #dc3545 !important;
-    margin-left: 10px;
 }
 
 .delete-btn:hover {
