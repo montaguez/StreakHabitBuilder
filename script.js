@@ -38,7 +38,14 @@ function addHabit() {
     const habitName = input.value.trim();
 
     if (habitName === '') {
-        alert('Please enter a habit name');
+        showNotification('Please enter a habit name', 'error');
+        input.focus();
+        return;
+    }
+
+    if (habits.some(h => h.name.toLowerCase() === habitName.toLowerCase())) {
+        showNotification('This habit already exists!', 'warning');
+        input.focus();
         return;
     }
 
@@ -54,6 +61,7 @@ function addHabit() {
     input.value = '';
     saveHabits();
     renderHabits();
+    showNotification(`"${habitName}" added successfully!`, 'success');
 }
 
 function renderHabits() {
@@ -116,7 +124,7 @@ function markComplete(habitId) {
     const lastCompleted = habit.lastCompleted ? new Date(habit.lastCompleted).toDateString() : null;
 
     if (lastCompleted === today) {
-        alert('You already completed this habit today!');
+        showNotification('You already completed this habit today!', 'info');
         return;
     }
 
@@ -133,6 +141,11 @@ function markComplete(habitId) {
     habit.lastCompleted = new Date();
     saveHabits();
     renderHabits();
+
+    const message = habit.streak === 1 ?
+        `Great start! You've begun your streak for "${habit.name}"` :
+        `Awesome! You're on a ${habit.streak}-day streak for "${habit.name}"! 🔥`;
+    showNotification(message, 'success');
 }
 
 function editHabit(habitId) {
@@ -148,14 +161,23 @@ function editHabit(habitId) {
 }
 
 function deleteHabit(habitId) {
-    if (confirm('Are you sure you want to delete this habit?')) {
+    const habit = habits.find(h => h.id === habitId);
+    if (!habit) return;
+
+    if (confirm(`Are you sure you want to delete "${habit.name}"? This action cannot be undone.`)) {
         habits = habits.filter(h => h.id !== habitId);
         saveHabits();
         renderHabits();
+        showNotification(`"${habit.name}" has been deleted`, 'info');
     }
 }
 
 function exportData() {
+    if (habits.length === 0) {
+        showNotification('No habits to export!', 'warning');
+        return;
+    }
+
     const dataStr = JSON.stringify(habits, null, 2);
     const dataBlob = new Blob([dataStr], {type: 'application/json'});
 
@@ -163,4 +185,27 @@ function exportData() {
     link.href = URL.createObjectURL(dataBlob);
     link.download = 'habit-streak-data.json';
     link.click();
+
+    showNotification('Data exported successfully!', 'success');
+}
+
+function showNotification(message, type = 'info') {
+    // Remove existing notification if any
+    const existing = document.querySelector('.notification');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    // Show notification
+    setTimeout(() => notification.classList.add('show'), 100);
+
+    // Auto-hide after 4 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 4000);
 }

@@ -267,3 +267,51 @@ button {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Notification system */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transform: translateX(400px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 1000;
+    max-width: 350px;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.notification-error {
+    background: linear-gradient(135deg, #dc3545, #e74c3c);
+}
+
+.notification-warning {
+    background: linear-gradient(135deg, #ffc107, #fd7e14);
+    color: #212529;
+}
+
+.notification-info {
+    background: linear-gradient(135deg, #17a2b8, #007bff);
+}
+
+/* Pulse animation for streak badges */
+.streak-badge {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
